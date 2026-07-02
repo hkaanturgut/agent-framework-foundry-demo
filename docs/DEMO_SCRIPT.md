@@ -1,62 +1,109 @@
-# 25-minute demo runbook
+# 25-minute runbook — Foundry Toolkit for VS Code only
 
-Session: *"Agent development got faster — Microsoft Agent Framework + Foundry Toolkit."*
-Goal: show that the **orchestration building blocks are now stable** and the **local
-dev loop in VS Code is GA**. One story ("Contoso Outdoors Launch Desk"), five patterns.
+Session title (recommended):  
+**"Build agents faster with Foundry Toolkit for VS Code (GA)"**
 
-> Golden rule: **run `python smoke_test.py` before you walk on stage.** If Wi-Fi dies,
-> switch `.env` to `MODEL_BACKEND=github` (or your pre-recorded terminal) and keep going.
+Goal: show a practical, low-risk workflow in VS Code that attendees can repeat the same day.
+
+---
+
+## Pre-demo checklist (run before you leave)
+
+```bash
+source .venv/bin/activate
+python smoke_test.py
+make single
+```
+
+In VS Code:
+1. Foundry Toolkit extension installed (`aka.ms/foundrytk`)
+2. Signed in and connected to your Azure/Foundry resources
+3. Tracing panel opens successfully
+4. Evaluation panel can load `foundry-toolkit/evaluation/dataset.jsonl`
 
 ---
 
 ## Timeline
 
-| Time | Section | You do / say | Command |
-|------|---------|--------------|---------|
-| 0:00–2:00 | **Hook** | "Last year agents were demos. This year they're building blocks." Set up Contoso Outdoors. | slide 1–3 |
-| 2:00–5:00 | **What shipped** | MAF = Semantic Kernel + AutoGen, GA orchestration. Foundry Toolkit GA. | slide 4–6 |
-| 5:00–8:00 | **Foundry Toolkit loop** | Live in VS Code: Model Catalog → Playground → Agent Builder → *Generate code*. | see below |
-| 8:00–10:00 | **00 single agent** | The generated agent, running from code. | `make single` |
-| 10:00–12:30 | **01 sequential** | Blog pipeline Outliner→Writer→Editor. "Deterministic handoff." | `make sequential` |
-| 12:30–15:00 | **02 concurrent** | SEO ∥ Legal ∥ Brand fan-out/fan-in. "Same agents, different shape." | `make concurrent` |
-| 15:00–17:30 | **03 handoff** | Support triage routes to a specialist. "The model picks the path." | `make handoff` |
-| 17:30–19:30 | **05 magentic** | Manager plans Researcher + Analyst. "Open-ended, plan-driven." | `make magentic` |
-| 19:30–22:00 | **06 HITL + tracing** | Approval gate on `publish_blog`; show the trace in the toolkit. | `make hitl` |
-| 22:00–24:00 | **Wrap** | Five patterns, one API. Eval + trace in-editor. Repo is the handout. | slide 17–19 |
-| 24:00–25:00 | **CTA / Q&A** | `aka.ms/foundrytk`, star the repo, questions. | slide 19 |
-
-*(04 group chat is the cut-for-time spare — drop it first if you're running long,
-or swap it in for magentic if the room prefers a lighter example.)*
+| Time | Section | What you do | Artifact |
+|---|---|---|---|
+| 0:00–2:00 | Hook | "You can now do the full agent dev loop in VS Code." | slides 1–2 |
+| 2:00–5:00 | What shipped | Foundry Toolkit is GA, and why that matters for speed. | slides 3–4 |
+| 5:00–8:00 | Model Catalog | Pick model and explain provider flexibility. | Toolkit UI |
+| 8:00–11:00 | Playground | Paste prompt, tune temperature, run fast iterations. | `foundry-toolkit/agent-builder-prompt.md` |
+| 11:00–14:00 | Agent Builder | Generate agent from prompt and explain code handoff. | Toolkit UI + `demos/00_single_agent.py` |
+| 14:00–17:00 | Agent Inspector | Run and inspect agent turns/breakpoints. | Toolkit UI |
+| 17:00–20:00 | Tracing | Enable tracing and show spans for a real run. | Toolkit UI + `make single` |
+| 20:00–22:00 | Evaluation | Load dataset and explain quality gates. | `foundry-toolkit/evaluation/dataset.jsonl` |
+| 22:00–25:00 | Wrap/Q&A | Recap loop + links + next steps. | final slides |
 
 ---
 
-## The VS Code portion (5:00–8:00)
+## Live steps (exact order)
 
-1. **Model Catalog** — filter to `gpt-4o-mini`, one sentence on multi-provider.
-2. **Playground** — paste `foundry-toolkit/agent-builder-prompt.md`, send one prompt.
-3. **Agent Builder** — same prompt → **Generate code**. "That's `demos/00_single_agent.py`."
-4. (If time) **Tracing** — start the local collector; you'll return to it at 19:30.
+1. **Model Catalog**
+   - Open Foundry Toolkit
+   - Choose a chat model you already have access to
+   - One sentence: "You can swap models/providers without leaving the editor."
 
-Keep it to ~3 minutes. The point is *"test → build → generate code, without leaving the editor."*
+2. **Playground**
+   - Paste prompt from `foundry-toolkit/agent-builder-prompt.md`
+   - Run 1-2 prompt variants
+   - Mention: "We validate behavior here before writing more code."
+
+3. **Agent Builder**
+   - Build agent from the tested prompt
+   - Show generated scaffold
+   - Tie it back to `demos/00_single_agent.py`
+
+4. **Run baseline sample**
+   ```bash
+   make single
+   ```
+
+5. **Tracing**
+   - Ensure tracing collector is active in toolkit
+   - Set `ENABLE_TRACING=true` in `.env`
+   - Run again:
+     ```bash
+     make single
+     ```
+   - Walk through spans and explain observability value
+
+6. **Evaluation**
+   - Open evaluation workflow in toolkit
+   - Load `foundry-toolkit/evaluation/dataset.jsonl`
+   - Explain pass/fail gating and iterative improvement
 
 ---
 
-## Per-demo talking points
+## Talk track cues (short)
 
-- **00 single agent** — baseline: `Agent(name, instructions, tools)`. Everything else is composition.
-- **01 sequential** — `SequentialBuilder(participants=[...])`. Output of one is input to the next. Deterministic.
-- **02 concurrent** — `ConcurrentBuilder(...)`. *Same three agents could be reviewers in parallel.* Fan-out, aggregate.
-- **03 handoff** — `HandoffBuilder` + `.add_handoff(...)`. The **model** decides who takes the ticket. Note `require_per_service_call_history_persistence=True`.
-- **05 magentic** — `MagenticBuilder(manager_agent=...)`. Manager writes a plan and delegates. Best for open-ended tasks.
-- **06 HITL** — `@tool(approval_mode="always_require")`. The workflow **pauses** and emits a `request_info` event; you approve; it resumes. This is the "safe autonomy" slide.
+- **Catalog:** model choice is now a product decision, not plumbing.
+- **Playground:** fastest place to test intent and tone.
+- **Builder:** shortest path from idea to runnable code.
+- **Inspector:** debugging agents is visual now.
+- **Tracing:** you can explain every step, not just output.
+- **Evaluation:** quality is measurable, not subjective.
 
 ---
 
-## If something breaks
+## If something fails live
 
-- **Auth/network error** → set `MODEL_BACKEND=github` in `.env`, rerun. (Have a PAT ready.)
-- **A run hangs** → Ctrl-C; say "non-determinism is why we have tracing + eval," pivot to the toolkit panels.
-- **Total failure** → walk the code in the editor; the narrative stands on the source alone.
-- Every demo prints clean, projector-readable banners via `src/contoso/pretty.py`.
+- **Toolkit sign-in/resource issue**: switch to code + screenshots; keep narrative on workflow.
+- **Model deployment issue**: use your fallback backend (`MODEL_BACKEND=github`) and continue.
+- **Tracing unavailable**: continue with Inspector + Evaluation; mention tracing is optional in local loop.
+- **Network instability**: run only `make single` and focus on generated code + process.
 
-See `docs/TROUBLESHOOTING.md` for specifics.
+---
+
+## Backup plan (ultra-simple)
+
+If time is tight or environment is unstable:
+1. Playground only (3 min)
+2. Agent Builder only (4 min)
+3. `make single` run (2 min)
+4. One tracing screenshot + one evaluation screenshot (2 min)
+
+You still deliver the full message: **discover → test → generate → inspect → evaluate**.
+
