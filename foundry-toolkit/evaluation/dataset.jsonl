@@ -1,0 +1,6 @@
+{"query": "Where is my order A1002?", "ground_truth": "order_agent", "context": "Customer asks about shipping status of an existing order."}
+{"query": "I want to return the alpine jacket I bought.", "ground_truth": "returns_agent", "context": "Customer wants to return a product."}
+{"query": "My kayak arrived damaged, I want my money back.", "ground_truth": "refund_agent", "context": "Customer requests a refund."}
+{"query": "Do you have the summit backpack in stock?", "ground_truth": "order_agent", "context": "Inventory / availability question routed to orders."}
+{"query": "How do I start a return for a defective tent?", "ground_truth": "returns_agent", "context": "Return process question."}
+{"query": "I was double charged and need a refund on order A1003.", "ground_truth": "refund_agent", "context": "Billing/refund request."}

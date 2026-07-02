@@ -1,0 +1,7 @@
+# Microsoft Agent Framework demo — pinned for reproducibility.
+# The SDK is a fast-moving 1.x; pin the exact version so a live demo can't drift.
+agent-framework==1.10.0
+
+# Config + auth
+python-dotenv>=1.0
+azure-identity>=1.19        # for Entra ID auth (az login) with Azure OpenAI / Foundry

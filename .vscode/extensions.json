@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "teamsdevapp.vscode-ai-toolkit",
+    "ms-python.python",
+    "ms-python.vscode-pylance"
+  ]
+}
