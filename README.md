@@ -1,120 +1,164 @@
-# Contoso Launch Desk
+# Foundry Toolkit for VS Code — Simple Demo Repo
 
-### Foundry Toolkit for VS Code — focused demo repo
+This repo is intentionally minimal.
 
-> Built for **Microsoft Build 2026 Recap — Toronto**.  
-> This version is intentionally simplified for a **Foundry Toolkit-only** session.
-
-[![Foundry Toolkit](https://img.shields.io/badge/Foundry%20Toolkit-GA-brightgreen)](https://code.visualstudio.com/docs/intelligentapps/overview)
-[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
-
----
-
-## What this repo is for
-
-This repo helps you explain to people who missed Build 2026:
-
-1. **What Foundry Toolkit for VS Code is** (and why GA matters)
-2. **How the in-editor dev loop works** end-to-end:
-   - Model Catalog
-   - Playground
-   - Agent Builder
-   - Agent Inspector
-   - Tracing
-   - Evaluation
-3. **How to run a practical demo quickly** with minimal moving parts
-
-The previous multi-pattern orchestration deep dive is still in the repo as optional appendix material, but your main talk can now stay entirely toolkit-centered.
+Use it to demo only four things:
+1. Install the extension
+2. Deploy a base model
+3. Create a prompt agent
+4. Use Playgrounds
 
 ---
 
-## 25-minute session flow (toolkit-only)
+## Session scope (what you will show)
 
-Use **[docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)** for the minute-by-minute script.
-
-High-level structure:
-
-- 0–5 min: what Foundry Toolkit is and what changed (GA)
-- 5–16 min: live VS Code loop (catalog → playground → builder → inspector)
-- 16–22 min: tracing + evaluation
-- 22–25 min: recap + links + Q&A
+This is a **Foundry Toolkit for VS Code only** session.  
+No deep orchestration code, no complex infra walkthrough, no framework internals.
 
 ---
 
-## Quickstart
+## Prerequisites
 
+1. **VS Code** installed
+2. **Azure subscription** with access to Azure AI Foundry
+3. **Foundry project** (existing or newly created in portal)
+4. Ability to sign in to Azure from VS Code
+
+Toolkit install link: **`aka.ms/foundrytk`**  
+Docs: https://code.visualstudio.com/docs/intelligentapps/overview
+
+---
+
+## Step-by-step demo guide
+
+## 1) Install the Foundry Toolkit extension
+
+In VS Code:
+1. Open **Extensions**
+2. Search for **Foundry Toolkit**
+3. Install extension id: `teamsdevapp.vscode-ai-toolkit`
+
+Optional CLI install:
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-```
-
-Set your backend in `.env`:
-
-- `MODEL_BACKEND=foundry` (preferred for this session)
-- `MODEL_BACKEND=azure-openai` (also fine)
-- `MODEL_BACKEND=github` (stage fallback)
-
-Sanity check:
-
-```bash
-python smoke_test.py
+code --install-extension teamsdevapp.vscode-ai-toolkit
 ```
 
 ---
 
-## Minimal live-demo path
+## 2) Sign in and connect your Foundry project
 
-1. Open VS Code with the **Foundry Toolkit** extension installed (`aka.ms/foundrytk`).
-2. Use **Model Catalog** to choose a model.
-3. Use **Playground** with `foundry-toolkit/agent-builder-prompt.md`.
-4. Use **Agent Builder** and generate code.
-5. Run the generated/baseline sample:
-   ```bash
-   make single
-   ```
-6. Turn on tracing:
-   - Set `ENABLE_TRACING=true` in `.env`
-   - Open Tracing panel in toolkit
-   - Run:
-     ```bash
-     make single
-     ```
-7. Show evaluation with:
-   - `foundry-toolkit/evaluation/dataset.jsonl`
-   - `foundry-toolkit/evaluation/README.md`
+1. Open the **Foundry Toolkit** panel in VS Code
+2. Sign in to Azure
+3. Select your subscription
+4. Select your Foundry resource and project
 
-Detailed click-paths are in **[foundry-toolkit/README.md](foundry-toolkit/README.md)**.
+Expected result: your project appears under Toolkit resources.
 
 ---
 
-## What to open on stage
+## 3) Deploy a base model (Model Catalog)
 
-- **Runbook:** [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)
-- **Toolkit guide:** [foundry-toolkit/README.md](foundry-toolkit/README.md)
-- **Slides:** `deck/Build2026-Recap-Agents.pptx`
+1. Open **Model Catalog** in Toolkit
+2. Choose a base chat model (example: `gpt-5.4-mini`)
+3. Click **Deploy**
+4. Select your project and region
+5. Keep defaults for first demo (or smallest allowed capacity)
+6. Wait for deployment status = **Succeeded**
 
-Regenerate slides:
+Tip: if your preferred model is unavailable in your subscription/region, pick any supported chat model and continue.
 
-```bash
-make deck
+---
+
+## 4) Playground demo (copy/paste prompts)
+
+Open Playground and set:
+- Temperature: `0.5` (start stable)
+- Max tokens: `300`
+
+Use this **system prompt**:
+
+```text
+You are Contoso Assistant, a concise and practical AI helper for a retail outdoor brand.
+Rules:
+- Be clear and short.
+- Use bullet points when useful.
+- If data is missing, state assumptions explicitly.
+- Never invent product availability or pricing.
 ```
 
+Use these **user prompts** in sequence:
+
+```text
+Prompt 1 (baseline):
+Write a 4-bullet launch summary for our new Summit 35L backpack.
+
+Prompt 2 (tone):
+Rewrite this for first-time hikers in simple language.
+
+Prompt 3 (constraint):
+Give me a 2-line website hero copy and one CTA button text.
+
+Prompt 4 (guardrail check):
+Tell me exact inventory count and tomorrow's discount percentage.
+```
+
+What to explain while running:
+- Prompt quality before coding
+- Fast iteration loop
+- Guardrail behavior on unknown data
+
+More prompt sets: `foundry-toolkit/playground-prompts.md`
+
 ---
 
-## Optional appendix (if asked)
+## 5) Create a Prompt Agent (Agent Builder)
 
-These are preserved, but not required for the simplified talk:
+1. Open **Agent Builder** in Toolkit
+2. Create new agent: `contoso-prompt-agent`
+3. Paste the same system prompt (or use `foundry-toolkit/agent-builder-prompt.md`)
+4. Select your deployed model
+5. Save agent configuration
+6. Run test prompts from the builder test panel
 
-- Multi-agent pattern demos (`demos/01` to `demos/06`)
-- MAF-focused architecture docs
-- Terraform/AVM Foundry package under `infra/terraform/`
+Suggested test prompts:
+- `Draft a 3-point product positioning for Summit 35L.`
+- `Give me a customer support reply for a delayed shipment.`
+- `Summarize this product in one sentence for social media.`
 
 ---
 
-## Links
+## 6) Show Playground + Agent side by side
 
-- Foundry Toolkit for VS Code: https://code.visualstudio.com/docs/intelligentapps/overview
-- Install shortcut: `aka.ms/foundrytk`
-- Azure AI Foundry docs: https://learn.microsoft.com/azure/foundry/
+In the live demo:
+1. Run a prompt in Playground
+2. Run same prompt in Prompt Agent test panel
+3. Explain difference:
+   - Playground = fast experimentation
+   - Prompt Agent = reusable behavior/config for app workflows
+
+---
+
+## 7) (Optional) Wrap-up talking points
+
+- Foundry Toolkit brings the full inner loop into VS Code
+- Team can move from idea to tested prompt agent quickly
+- Model deployment + prompt iteration + reusable agent are all in one tool
+
+---
+
+## Recommended 25-minute timing
+
+- 0–4 min: install + sign-in + project selection
+- 4–10 min: deploy model from catalog
+- 10–18 min: playground prompt iterations
+- 18–24 min: create and test prompt agent
+- 24–25 min: recap + Q&A
+
+---
+
+## Files in this repo
+
+- `README.md` — full demo script (this file)
+- `foundry-toolkit/agent-builder-prompt.md` — primary prompt agent template
+- `foundry-toolkit/playground-prompts.md` — extra prompt sets for live testing
 

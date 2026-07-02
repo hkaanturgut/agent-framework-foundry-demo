@@ -1,2 +1,0 @@
-# Dev-only extras (not needed to run the demos).
-python-pptx>=1.0            # regenerate the slide deck: python deck/build_deck.py
