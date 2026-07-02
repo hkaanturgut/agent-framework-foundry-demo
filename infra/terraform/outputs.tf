@@ -46,6 +46,6 @@ output "env_snippet" {
   value       = <<-EOT
 MODEL_BACKEND=foundry
 FOUNDRY_PROJECT_ENDPOINT=https://${module.ai_services.name}.services.ai.azure.com/api/projects/${azapi_resource.foundry_project.name}
-FOUNDRY_MODEL=gpt-4o-mini
+FOUNDRY_MODEL=${var.foundry_model_name}
 EOT
 }

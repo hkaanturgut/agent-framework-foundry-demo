@@ -132,6 +132,12 @@ variable "cognitive_deployments" {
   default     = {}
 }
 
+variable "foundry_model_name" {
+  description = "Model or deployment name the app should use when targeting the Foundry project endpoint."
+  type        = string
+  default     = "gpt-4o-mini"
+}
+
 variable "tags" {
   description = "Additional tags applied to resources."
   type        = map(string)
