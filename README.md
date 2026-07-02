@@ -92,11 +92,42 @@ make            # list every shortcut (setup, smoke, single…hitl, deck)
 
 ---
 
+## Package demo: Foundry IaC + CI/CD (AVM)
+
+Yes — this repo now includes a deployable infra package:
+
+- **Terraform + AVM modules** under `infra/terraform/`
+- **Foundry project creation** via AzAPI
+- **GitHub Actions CI/CD** pipeline at `.github/workflows/terraform-foundry-cicd.yml`
+
+Quick start:
+
+```bash
+cd infra/terraform
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform plan -var-file=terraform.tfvars
+terraform apply -auto-approve -var-file=terraform.tfvars
+```
+
+Then run:
+
+```bash
+terraform output -raw env_snippet
+```
+
+and paste that into your app `.env`.
+
+Infra guide: **[infra/terraform/README.md](infra/terraform/README.md)**
+
+---
+
 ## Repo map
 
 ```
 src/contoso/     reusable library: config, client, tools, agents, pretty, tracing
 demos/           one file per orchestration pattern (00–06)
+infra/terraform/ Foundry package demo (Terraform + AVM + CI/CD)
 foundry-toolkit/ what to click in VS Code + an evaluation dataset
 docs/            SETUP · DEMO_SCRIPT (25-min runbook) · ARCHITECTURE · TROUBLESHOOTING
 deck/            python-pptx generator + the generated .pptx

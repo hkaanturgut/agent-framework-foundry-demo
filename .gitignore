@@ -20,3 +20,10 @@ venv/
 # Traces / local artifacts
 *.otel
 traces/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars

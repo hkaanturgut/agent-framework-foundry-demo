@@ -1,0 +1,33 @@
+location      = "canadacentral"
+name_prefix   = "build26foundry"
+environment   = "demo"
+project_name  = "launch-desk"
+
+tags = {
+  owner = "your-name"
+  event = "build-2026-recap"
+}
+
+# Optional: deploy one OpenAI model deployment as part of the AI Services account.
+# Remove this block if you only want account + project.
+# cognitive_deployments = {
+#   gpt4o-mini = {
+#     name = "gpt-4o-mini"
+#     model = {
+#       format = "OpenAI"
+#       name   = "gpt-4o-mini"
+#     }
+#     scale = {
+#       type     = "Standard"
+#       capacity = 10
+#     }
+#   }
+# }
+
+# Optional: role assignments at project scope.
+# project_role_assignments = {
+#   ai_developer = {
+#     principal_id         = "00000000-0000-0000-0000-000000000000"
+#     role_definition_name = "Azure AI Developer"
+#   }
+# }
