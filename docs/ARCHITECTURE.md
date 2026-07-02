@@ -3,7 +3,7 @@
 ## Layout
 
 ```
-agent-framework-foundry-demo/
+foundry-toolkit-vscode-demo/
 ├── src/contoso/            # reusable library — the "story" lives here
 │   ├── config.py           # .env → Settings, resolves the backend
 │   ├── client.py           # get_chat_client() + make_agent()  (backend-agnostic)

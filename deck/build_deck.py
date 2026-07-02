@@ -299,7 +299,7 @@ s = content_slide(
         ("Install link: aka.ms/foundrytk", 0),
         ("Session runbook: docs/DEMO_SCRIPT.md", 0),
         ("Toolkit demo guide: foundry-toolkit/README.md", 0),
-        ("Repo: github.com/hkaanturgut/agent-framework-foundry-demo", 0),
+        ("Repo: github.com/hkaanturgut/foundry-toolkit-vscode-demo", 0),
     ],
 )
 
@@ -312,4 +312,3 @@ s = title_slide(
 out = pathlib.Path(__file__).resolve().parent / "Build2026-Recap-Agents.pptx"
 prs.save(out)
 print(f"Wrote {out} ({len(prs.slides)} slides)")
-
